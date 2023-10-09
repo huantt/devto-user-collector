@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  proxy:
+    image: "huanttok/proxy-service:latest"
+    restart: on-failure
+    command:
+      - -countries=EU,AS,AM
+      - -request-proxies=25
+  app:
+    image: "user-collector-xx"
+    build:
+      dockerfile: ./Dockerfile
+    depends_on:
+      - proxy
+    restart: on-failure
+    links:
+      - proxy:proxy
+    command:
+      - crawl-devto-users
+      - --from=1
+      - --to=1200000
+      - --concurrent=20
+      - --proxy=http://proxy:18080
+    volumes:
+      - ./data/:/app/data

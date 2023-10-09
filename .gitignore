@@ -1,0 +1,5 @@
+.idea/
+.test/
+.DS_Store
+data/articles
+data/database.sqlite
